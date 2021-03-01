@@ -11,17 +11,27 @@ public class Spawner : MonoBehaviour
     public float destroyPoint;
     public float spawnPoint;
     public GameObject ringType1;
+    public GameObject ringType2;
     public List<GameObject> ringsInLevel = new List<GameObject>();
     public List<GameObject> ringsLoaded = new List<GameObject>();
     float ringWidth;
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        
         ringWidth = 2*(ringType1.GetComponent<MeshRenderer>().bounds.extents.z);
         for (int i = 0; i<50 ; i++)
         {
-            ringsInLevel.Add(ringType1);
+            if (UnityEngine.Random.Range(0f, 2) > 1)
+            {
+                ringsInLevel.Add(ringType2);
+            }
+            else 
+            {
+                ringsInLevel.Add(ringType1);
+            }
         }
 
         int ringsAtStart = (int)(System.Math.Abs(spawnPoint - destroyPoint) / ringWidth);
