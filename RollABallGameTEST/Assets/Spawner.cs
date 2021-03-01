@@ -13,12 +13,13 @@ public class Spawner : MonoBehaviour
     public GameObject ringType1;
     public List<GameObject> ringsInLevel = new List<GameObject>();
     public List<GameObject> ringsLoaded = new List<GameObject>();
+    float ringWidth;
 
     // Start is called before the first frame update
     void Start()
     {
-        float ringWidth = 2*(ringType1.GetComponent<MeshRenderer>().bounds.extents.z);
-        for (int i = 0; i<10 ; i++)
+        ringWidth = 2*(ringType1.GetComponent<MeshRenderer>().bounds.extents.z);
+        for (int i = 0; i<50 ; i++)
         {
             ringsInLevel.Add(ringType1);
         }
@@ -35,12 +36,17 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for(int i = 0; i<=ringsLoaded.Count; i++)
+        for (int a = 0; a < (int)((Math.Abs(ringsLoaded[ringsLoaded.Count-1].transform.position.z - spawnPoint)) / ringWidth) ; a++)
+        {
+            ringsLoaded.Add(Instantiate(ringsInLevel[ringsLoaded.Count-1], new UnityEngine.Vector3(0, 0, ringsLoaded[ringsLoaded.Count-1].transform.position.z + (a+1) * ringWidth), UnityEngine.Quaternion.identity));
+        }
+        
+        for(int i = 0; i<ringsLoaded.Count; i++)
         {
             ringsLoaded[i].transform.position = new UnityEngine.Vector3(0,0, ringsLoaded[i].transform.position.z - velocity * Time.deltaTime);
         }
 
-        float newSpeed = velocity += acceleration * Time.deltaTime;
+        float newSpeed = velocity + acceleration * Time.deltaTime;
         velocity = newSpeed;
 
     }
