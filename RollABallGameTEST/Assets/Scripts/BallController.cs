@@ -74,13 +74,13 @@ public class BallController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.D))
         {
             Debug.Log("A key was pressed.");
             angleToRotate += 0.1;
         }
 
-        if (Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.A))
         {
             Debug.Log("D key was released.");
             angleToRotate -= 0.1;

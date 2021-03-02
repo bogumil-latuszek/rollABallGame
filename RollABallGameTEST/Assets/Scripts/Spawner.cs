@@ -15,7 +15,8 @@ public class Spawner : MonoBehaviour
     public List<GameObject> ringsInLevel = new List<GameObject>();
     public List<GameObject> ringsLoaded = new List<GameObject>();
     float ringWidth;
-    
+    int ringsAtStart;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,10 +35,11 @@ public class Spawner : MonoBehaviour
             }
         }
 
-        int ringsAtStart = (int)(System.Math.Abs(spawnPoint - destroyPoint) / ringWidth);
+        ringsAtStart = (int)(System.Math.Abs(spawnPoint - destroyPoint) / ringWidth);
         for (int i = 0; i<ringsAtStart; i++)
         {
-            ringsLoaded.Add(Instantiate(ringsInLevel[i], new UnityEngine.Vector3(0, 0, destroyPoint+i*ringWidth), UnityEngine.Quaternion.identity)) ;
+            ringsLoaded.Add(Instantiate(ringsInLevel[0], new UnityEngine.Vector3(0, 0, destroyPoint+i*ringWidth), UnityEngine.Quaternion.identity)) ;
+            ringsInLevel.RemoveAt(0);
 
         }
         Debug.Log(ringsLoaded.Count);
@@ -46,12 +48,43 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int a = 0; a < (int)((Math.Abs(ringsLoaded[ringsLoaded.Count-1].transform.position.z - spawnPoint)) / ringWidth) ; a++)
+        
+        foreach(GameObject ring in ringsLoaded)
+        {
+            if(ring.transform.position.z < destroyPoint)
+            {
+                ringsLoaded.Remove(ring);
+                Destroy(ring);
+            }
+        }
+        
+
+        /*
+         for (int a = 0; a < (int)((Math.Abs(ringsLoaded[ringsLoaded.Count-1].transform.position.z - spawnPoint)) / ringWidth) ; a++)
         {
             ringsLoaded.Add(Instantiate(ringsInLevel[ringsLoaded.Count-1], new UnityEngine.Vector3(0, 0, ringsLoaded[ringsLoaded.Count-1].transform.position.z + (a+1) * ringWidth), UnityEngine.Quaternion.identity));
         }
+        */
         
-        for(int i = 0; i<ringsLoaded.Count; i++)
+        if (ringsLoaded.Count < ringsAtStart)
+        {
+            for (int a = 0; a < (ringsAtStart-ringsLoaded.Count); a++)
+            {
+                ringsLoaded.Add(Instantiate(ringsInLevel[0], new UnityEngine.Vector3(0, 0, ringsLoaded[ringsLoaded.Count - 1].transform.position.z + (a + 1) * ringWidth), UnityEngine.Quaternion.identity));
+                ringsInLevel.RemoveAt(0);
+            }
+        }
+        else if(ringsLoaded.Count > ringsAtStart)
+        {
+            for (int b = 0; b < (ringsLoaded.Count - ringsAtStart); b++)
+            {
+
+                    Destroy(ringsLoaded[b]);
+                    ringsLoaded.RemoveAt(b);
+
+            }
+        }
+        for (int i = 0; i<ringsLoaded.Count; i++)
         {
             ringsLoaded[i].transform.position = new UnityEngine.Vector3(0,0, ringsLoaded[i].transform.position.z - velocity * Time.deltaTime);
         }

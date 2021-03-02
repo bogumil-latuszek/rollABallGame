@@ -606,10 +606,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: 1
-  acceleration: 0.25
+  acceleration: 5
   destroyPoint: -4
   spawnPoint: 26
   ringType1: {fileID: 3749488118118864064, guid: 6ff58ba2999550a4f8d971ac245efb8c,
+    type: 3}
+  ringType2: {fileID: 5507924099694047972, guid: c7cfaa056cebced46b47b6a4de1389f4,
     type: 3}
   ringsInLevel: []
   ringsLoaded: []
